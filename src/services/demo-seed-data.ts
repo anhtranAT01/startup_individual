@@ -1427,6 +1427,38 @@ const APP_SEEDS: Array<{
     cover: "Em mong muốn tham gia điều phối CLB Tiếng Anh sáng Chủ nhật tại Đà Nẵng.",
     note: null,
   },
+  {
+    idx: 19,
+    jobIdx: 0,
+    stuIdx: 0,
+    status: "pending",
+    cover: "Em đăng ký ứng tuyển ca tối và cuối tuần tại Cafe Mộc Demo, có thể bắt đầu ngay tuần này.",
+    note: null,
+  },
+  {
+    idx: 20,
+    jobIdx: 6,
+    stuIdx: 0,
+    status: "pending",
+    cover: "Em sử dụng thành thạo Canva Pro và Illustrator cơ bản, mong muốn hỗ trợ thiết kế bài đăng Social Media.",
+    note: null,
+  },
+  {
+    idx: 21,
+    jobIdx: 21,
+    stuIdx: 0,
+    status: "reviewed",
+    cover: "Em đã có kinh nghiệm quản trị fanpage CLB sinh viên với hơn 15.000 thành viên.",
+    note: "Hồ sơ phù hợp, bộ phận Nhân sự đang xếp lịch trao đổi.",
+  },
+  {
+    idx: 22,
+    jobIdx: 22,
+    stuIdx: 0,
+    status: "rejected",
+    cover: "Em gửi hồ sơ ứng tuyển vị trí thiết kế Slide thuyết trình.",
+    note: "Đợt tuyển này đã đủ số lượng cộng tác viên, hẹn bạn đợt sau.",
+  },
 ];
 
 export const DEMO_APPLICATIONS: Application[] = APP_SEEDS.map((a) => {

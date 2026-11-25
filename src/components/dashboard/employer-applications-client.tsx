@@ -3,9 +3,12 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
+  Calendar,
   ExternalLink,
   FileText,
   GraduationCap,
+  Kanban,
+  LayoutList,
   Mail,
   Phone,
   Save,
@@ -13,7 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { APPLICATION_STATUS_MAP } from "@/lib/constants";
-import { formatDateVN } from "@/lib/utils";
+import { cn, formatDateVN, formatRelativeTimeVN } from "@/lib/utils";
 import type { Application, ApplicationStatus, Job } from "@/types/database";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +26,17 @@ import {
   getAuthorizedFileUrlAction,
   updateApplicationStatusAction,
 } from "@/services/actions";
+
+const EMPLOYER_KANBAN_COLS: Array<{
+  key: ApplicationStatus;
+  icon: string;
+  title: string;
+}> = [
+  { key: "pending", icon: "👋", title: "Chờ xem" },
+  { key: "reviewed", icon: "❣️", title: "Đã xem hồ sơ" },
+  { key: "shortlisted", icon: "💬", title: "Phỏng vấn / Tiềm năng" },
+  { key: "accepted", icon: "🎉", title: "Đã nhận việc" },
+];
 
 export function EmployerApplicationsClient({
   applications,
@@ -34,6 +48,7 @@ export function EmployerApplicationsClient({
   initialJobId?: string;
 }) {
   const router = useRouter();
+  const [viewMode, setViewMode] = React.useState<"kanban" | "list">("kanban");
   const [jobFilter, setJobFilter] = React.useState(initialJobId || "all");
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [notes, setNotes] = React.useState<Record<string, string>>(() => {
@@ -82,14 +97,46 @@ export function EmployerApplicationsClient({
 
   return (
     <div className="space-y-5">
-      <Card className="p-4 flex flex-wrap items-center justify-between gap-3">
+      {/* Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
+          <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-100/80 p-1">
+            <button
+              type="button"
+              onClick={() => setViewMode("kanban")}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all",
+                viewMode === "kanban"
+                  ? "bg-white text-slate-900 shadow-2xs"
+                  : "text-slate-600 hover:text-slate-900"
+              )}
+            >
+              <Kanban className="h-3.5 w-3.5 text-blue-600" />
+              Kanban Pipeline
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all",
+                viewMode === "list"
+                  ? "bg-white text-slate-900 shadow-2xs"
+                  : "text-slate-600 hover:text-slate-900"
+              )}
+            >
+              <LayoutList className="h-3.5 w-3.5 text-blue-600" />
+              Hồ sơ chi tiết
+            </button>
+          </div>
+
           <SelectNative
             value={jobFilter}
             onChange={(e) => setJobFilter(e.target.value)}
-            className="w-64"
+            className="w-60"
           >
-            <option value="all">Tất cả tin tuyển dụng ({applications.length})</option>
+            <option value="all">
+              Tất cả tin tuyển dụng ({applications.length})
+            </option>
             {jobs.map((j) => (
               <option key={j.id} value={j.id}>
                 {j.title}
@@ -97,36 +144,125 @@ export function EmployerApplicationsClient({
             ))}
           </SelectNative>
 
-          <SelectNative
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-48"
-          >
-            <option value="all">Mọi trạng thái</option>
-            {Object.entries(APPLICATION_STATUS_MAP).map(([k, v]) => (
-              <option key={k} value={k}>
-                {v.label}
-              </option>
-            ))}
-          </SelectNative>
+          {viewMode === "list" ? (
+            <SelectNative
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-44"
+            >
+              <option value="all">Mọi trạng thái</option>
+              {Object.entries(APPLICATION_STATUS_MAP).map(([k, v]) => (
+                <option key={k} value={k}>
+                  {v.label}
+                </option>
+              ))}
+            </SelectNative>
+          ) : null}
         </div>
-
-        <span className="text-xs text-slate-500">
-          Đang hiển thị <strong>{filtered.length}</strong> hồ sơ
-        </span>
-      </Card>
+      </div>
 
       {filtered.length === 0 ? (
         <Card className="p-12 text-center space-y-2">
           <UserCheck className="h-9 w-9 text-slate-400 mx-auto" />
           <h3 className="font-bold text-slate-900">
-            Chưa có ứng viên nào khớp với bộ lọc
+            Chưa có ứng viên nào trong danh sách này
           </h3>
-          <p className="text-xs text-slate-500">
-            Các hồ sơ mới sẽ xuất hiện tại đây ngay khi sinh viên nhấn Ứng tuyển.
-          </p>
         </Card>
+      ) : viewMode === "kanban" ? (
+        /* EMPLOYER KANBAN CANDIDATE PIPELINE */
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-stretch">
+          {EMPLOYER_KANBAN_COLS.map((col) => {
+            const colApps = filtered.filter((a) => a.status === col.key);
+            return (
+              <div
+                key={col.key}
+                className="rounded-2xl bg-slate-100/80 border border-slate-200/70 p-3.5 flex flex-col min-h-[420px]"
+              >
+                <div className="mb-3 px-1 flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-slate-800">
+                    {col.icon} {col.title} ({colApps.length})
+                  </span>
+                </div>
+
+                <div className="space-y-3 flex-1">
+                  {colApps.map((app) => {
+                    const studentName = app.student?.full_name || "Sinh viên";
+                    const initials = studentName
+                      .split(" ")
+                      .slice(-2)
+                      .map((w) => w[0])
+                      .join("")
+                      .toUpperCase();
+
+                    return (
+                      <div
+                        key={app.id}
+                        className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-elevated space-y-3"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 border border-blue-200 text-xs font-extrabold text-blue-700">
+                            {initials}
+                          </div>
+                          <span className="text-[11px] font-medium text-slate-400 truncate max-w-[130px]">
+                            {app.student_profile?.major || "Sinh viên"}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-extrabold text-slate-900">
+                            {studentName}
+                          </h4>
+                          <p className="text-xs text-blue-700 font-semibold truncate">
+                            {app.job?.title}
+                          </p>
+                          <p className="mt-1 line-clamp-2 text-[11px] text-slate-500">
+                            {app.cover_letter}
+                          </p>
+                        </div>
+
+                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <span className="text-[11px] text-slate-500 truncate">
+                            {app.student?.phone || app.student?.email}
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-700">
+                            <Calendar className="h-2.5 w-2.5" />
+                            {formatRelativeTimeVN(app.created_at)}
+                          </span>
+                        </div>
+
+                        {/* Quick Stage Selector inside Kanban Card */}
+                        <div className="pt-1">
+                          <select
+                            value={app.status}
+                            disabled={busyId === app.id}
+                            onChange={(e) =>
+                              handleUpdate(
+                                app.id,
+                                e.target.value as ApplicationStatus
+                              )
+                            }
+                            aria-label="Chuyển cột trạng thái ứng viên"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:border-blue-600 focus:outline-none"
+                          >
+                            <option value="pending">👋 Chờ xem</option>
+                            <option value="reviewed">❣️ Đã xem hồ sơ</option>
+                            <option value="shortlisted">
+                              💬 Phỏng vấn / Tiềm năng
+                            </option>
+                            <option value="accepted">🎉 Chấp nhận nhận việc</option>
+                            <option value="rejected">✕ Từ chối</option>
+                          </select>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
+        /* DETAILED LIST VIEW */
         <div className="space-y-4">
           {filtered.map((app) => {
             const st = APPLICATION_STATUS_MAP[app.status];
@@ -153,15 +289,18 @@ export function EmployerApplicationsClient({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleViewCv(app.cv_url || sp?.cv_url || null)}
+                    onClick={() =>
+                      handleViewCv(app.cv_url || sp?.cv_url || null)
+                    }
                   >
                     <FileText className="h-4 w-4 text-blue-600" />
-                    {app.cv_url || sp?.cv_url ? "Mở xem CV PDF" : "Chưa có tệp CV"}
+                    {app.cv_url || sp?.cv_url
+                      ? "Mở xem CV PDF"
+                      : "Chưa có tệp CV"}
                     <ExternalLink className="h-3 w-3" />
                   </Button>
                 </div>
 
-                {/* Authorized Student Contact & Academic Summary */}
                 <div className="rounded-xl bg-slate-50 border border-slate-100 p-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-700">
                   <div className="space-y-1">
                     <p className="font-semibold text-slate-900 flex items-center gap-1.5">
@@ -171,14 +310,13 @@ export function EmployerApplicationsClient({
                     <p>
                       {sp?.university || "Đang cập nhật"} •{" "}
                       {sp?.major || "Chuyên ngành"}
-                      {sp?.year_of_study ? ` (Năm ${sp.year_of_study})` : ""}
                     </p>
                   </div>
 
                   <div className="space-y-1">
                     <p className="font-semibold text-slate-900 flex items-center gap-1.5">
                       <Mail className="h-3.5 w-3.5 text-cyan-600" />
-                      Thông tin liên hệ (Được cấp quyền)
+                      Thông tin liên hệ
                     </p>
                     <p>{app.student?.email}</p>
                     {app.student?.phone ? (
@@ -201,14 +339,6 @@ export function EmployerApplicationsClient({
                   </div>
                 </div>
 
-                <div className="text-sm text-slate-700 bg-white rounded-xl border border-slate-100 p-3.5">
-                  <strong className="text-xs uppercase tracking-wider text-slate-400 block mb-1">
-                    Lời giới thiệu của ứng viên:
-                  </strong>
-                  {app.cover_letter}
-                </div>
-
-                {/* Internal Employer Note & Status Controls */}
                 <div className="pt-3 border-t border-slate-100 grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
                   <div className="lg:col-span-7">
                     <label className="block text-xs font-semibold text-slate-600 mb-1">
@@ -232,7 +362,10 @@ export function EmployerApplicationsClient({
                       defaultValue={app.status}
                       disabled={busyId === app.id}
                       onChange={(e) =>
-                        handleUpdate(app.id, e.target.value as ApplicationStatus)
+                        handleUpdate(
+                          app.id,
+                          e.target.value as ApplicationStatus
+                        )
                       }
                       className="w-48 h-9 text-xs font-semibold"
                     >

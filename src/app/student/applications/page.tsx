@@ -4,7 +4,7 @@ import {
 } from "@/services/data-service";
 import { StudentApplicationsClient } from "@/components/dashboard/student-applications-client";
 
-export const metadata = { title: "Quản lý đơn ứng tuyển" };
+export const metadata = { title: "My Application Pipeline – Quản lý ứng tuyển" };
 
 export default async function StudentApplicationsPage() {
   const auth = await getCurrentAuthContext();
@@ -13,11 +13,12 @@ export default async function StudentApplicationsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-          Theo dõi Trạng thái Ứng tuyển
+        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+          My Application Pipeline
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Cập nhật trực tiếp tiến trình xét duyệt hồ sơ từ các nhà tuyển dụng.
+          Theo dõi tiến trình ứng tuyển theo thời gian thực, cập nhật phản hồi
+          trực tiếp từ các đơn vị tuyển dụng.
         </p>
       </div>
 
