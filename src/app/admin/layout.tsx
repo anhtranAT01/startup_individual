@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { getCurrentAuthContext } from "@/services/data-service";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPortalLayout({
   children,
 }: {

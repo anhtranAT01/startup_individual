@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { APPLICATION_STATUS_MAP } from "@/lib/constants";
 import { formatDateVN } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getEmployerPortalData,
@@ -19,11 +20,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Dashboard Nhà tuyển dụng" };
 
 export default async function EmployerDashboardPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getEmployerPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/employer/dashboard");
+  }
+  const data = await getEmployerPortalData(auth.user.id);
 
   const stats = data?.stats || {
     totalJobs: 0,

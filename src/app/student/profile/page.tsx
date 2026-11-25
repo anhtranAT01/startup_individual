@@ -1,10 +1,15 @@
+import { redirect } from "next/navigation";
 import { getCurrentAuthContext } from "@/services/data-service";
 import { StudentProfileForm } from "@/components/forms/student-profile-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Hồ sơ cá nhân Sinh viên" };
 
 export default async function StudentProfilePage() {
   const auth = await getCurrentAuthContext();
+  if (!auth.user) {
+    redirect("/login?next=/student/profile");
+  }
 
   return (
     <div className="max-w-4xl space-y-6">

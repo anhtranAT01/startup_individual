@@ -1,14 +1,19 @@
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getStudentPortalData,
 } from "@/services/data-service";
 import { SavedJobsListClient } from "@/components/dashboard/saved-jobs-client";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Công việc đã lưu" };
 
 export default async function StudentSavedJobsPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getStudentPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/student/saved-jobs");
+  }
+  const data = await getStudentPortalData(auth.user.id);
 
   return (
     <div className="space-y-6">

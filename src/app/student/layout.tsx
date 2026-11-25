@@ -5,6 +5,8 @@ import {
 } from "@/services/data-service";
 import { StudentWorkspaceShell } from "@/components/layout/student-workspace-nav";
 
+export const dynamic = "force-dynamic";
+
 export default async function StudentPortalLayout({
   children,
 }: {

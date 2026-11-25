@@ -1,13 +1,18 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { KeyRound, ShieldCheck } from "lucide-react";
 import { getCurrentAuthContext } from "@/services/data-service";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Cài đặt tài khoản Nhà tuyển dụng" };
 
 export default async function EmployerSettingsPage() {
   const auth = await getCurrentAuthContext();
+  if (!auth.user) {
+    redirect("/login?next=/employer/settings");
+  }
 
   return (
     <div className="space-y-6 max-w-3xl">

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { APPLICATION_STATUS_MAP } from "@/lib/constants";
 import { formatDateVN } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getStudentPortalData,
@@ -18,11 +19,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Bảng điều khiển Sinh viên" };
 
 export default async function StudentDashboardPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getStudentPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/student/dashboard");
+  }
+  const data = await getStudentPortalData(auth.user.id);
 
   const applications = data?.applications || [];
   const savedJobs = data?.savedJobs || [];

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import {
   getCurrentAuthContext,
@@ -7,11 +8,15 @@ import {
 import { EmployerJobsClient } from "@/components/dashboard/employer-jobs-client";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Quản lý tin tuyển dụng" };
 
 export default async function EmployerJobsPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getEmployerPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/employer/jobs");
+  }
+  const data = await getEmployerPortalData(auth.user.id);
 
   return (
     <div className="space-y-6">

@@ -7,6 +7,7 @@ import { JobsFilterPanel } from "@/components/jobs/jobs-filter-bar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Danh sách việc làm thêm cho sinh viên",
 };

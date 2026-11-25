@@ -1,10 +1,15 @@
+import { redirect } from "next/navigation";
 import { getCurrentAuthContext } from "@/services/data-service";
 import { JobEditorForm } from "@/components/forms/job-editor-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Tạo tin tuyển dụng mới" };
 
 export default async function CreateJobPage() {
   const auth = await getCurrentAuthContext();
+  if (!auth.user) {
+    redirect("/login?next=/employer/jobs/create");
+  }
   const isVerified = auth.employerProfile?.verification_status === "verified";
 
   return (
@@ -20,7 +25,7 @@ export default async function CreateJobPage() {
 
       <JobEditorForm
         isVerifiedEmployer={isVerified}
-        companyEmail={auth.user!.email}
+        companyEmail={auth.user?.email || ""}
       />
     </div>
   );

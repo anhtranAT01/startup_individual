@@ -5,6 +5,7 @@ import {
 } from "@/services/data-service";
 import { NotificationsClient } from "@/components/dashboard/notifications-client";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Thông báo của bạn" };
 
 export default async function NotificationsPage() {

@@ -1,14 +1,19 @@
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getEmployerPortalData,
 } from "@/services/data-service";
 import { EmployerVerificationForm } from "@/components/forms/employer-verification-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Xác minh nhà tuyển dụng" };
 
 export default async function EmployerVerificationPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getEmployerPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/employer/verification");
+  }
+  const data = await getEmployerPortalData(auth.user.id);
 
   return (
     <div className="space-y-6">

@@ -1,10 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getEmployerPortalData,
 } from "@/services/data-service";
 import { JobEditorForm } from "@/components/forms/job-editor-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Chỉnh sửa tin tuyển dụng" };
 
 export default async function EditEmployerJobPage({
@@ -14,7 +15,10 @@ export default async function EditEmployerJobPage({
 }) {
   const { id } = await params;
   const auth = await getCurrentAuthContext();
-  const data = await getEmployerPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/employer/jobs");
+  }
+  const data = await getEmployerPortalData(auth.user.id);
 
   const targetJob = data?.jobs.find((j) => j.id === id);
   if (!targetJob) {
@@ -37,7 +41,7 @@ export default async function EditEmployerJobPage({
         isVerifiedEmployer={
           auth.employerProfile?.verification_status === "verified"
         }
-        companyEmail={auth.user!.email}
+        companyEmail={auth.user?.email || ""}
       />
     </div>
   );

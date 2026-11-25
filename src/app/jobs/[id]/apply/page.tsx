@@ -10,6 +10,7 @@ import { ApplyJobForm } from "@/components/forms/apply-job-form";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Ứng tuyển công việc" };
 
 export default async function ApplyJobPage({

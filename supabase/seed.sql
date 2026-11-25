@@ -44,18 +44,7 @@ WHERE id = '00000000-0000-4000-8000-000000000001';
 
 DELETE FROM public.student_profiles WHERE user_id = '00000000-0000-4000-8000-000000000001';
 
--- 2. Đồng bộ 8 Hồ sơ Nhà tuyển dụng Demo (với UUID cố định để liên kết công việc)
-DELETE FROM public.employer_profiles WHERE user_id IN (
-  '10000000-0000-4000-8000-000000000001',
-  '10000000-0000-4000-8000-000000000002',
-  '10000000-0000-4000-8000-000000000003',
-  '10000000-0000-4000-8000-000000000004',
-  '10000000-0000-4000-8000-000000000005',
-  '10000000-0000-4000-8000-000000000006',
-  '10000000-0000-4000-8000-000000000007',
-  '10000000-0000-4000-8000-000000000008'
-) AND id NOT LIKE '11000000-%';
-
+-- 2. Đồng bộ 8 Hồ sơ Nhà tuyển dụng Demo
 INSERT INTO public.employer_profiles (
   id, user_id, company_name, description, industry, address, website,
   contact_email, contact_phone, founded_info, verification_status, is_demo
@@ -167,7 +156,11 @@ VALUES
   ('40000000-0000-4000-8000-000000000013', '30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000007', 'Em là sinh viên Báo chí năm 2, mong muốn cộng tác viết bài.', 'Bản tin sinh viên', 'Linh hoạt', 'pending', NULL),
   ('40000000-0000-4000-8000-000000000014', '30000000-0000-4000-8000-000000000015', '20000000-0000-4000-8000-000000000007', 'Em ứng tuyển vị trí quay dựng clip ngắn cuối tuần.', 'Dựng CapCut cơ bản', 'Cuối tuần', 'rejected', 'Đợt tuyển này ưu tiên ứng viên có sẵn mic thu âm rời.'),
   ('40000000-0000-4000-8000-000000000015', '30000000-0000-4000-8000-000000000008', '20000000-0000-4000-8000-000000000008', 'Em rất yêu thích pha chế đồ uống và mong được học nghề Barista.', 'Hậu cần sự kiện', 'Ca chiều', 'pending', NULL),
-  ('40000000-0000-4000-8000-000000000016', '30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000010', 'Em thành thạo Google Sheets và cam kết 12 giờ/tuần.', '4 tháng trực gian hàng', 'Linh hoạt', 'accepted', 'Bài test nhập liệu đạt 99% chính xác.')
+  ('40000000-0000-4000-8000-000000000016', '30000000-0000-4000-8000-000000000011', '20000000-0000-4000-8000-000000000010', 'Em thành thạo Google Sheets và cam kết 12 giờ/tuần.', '4 tháng trực gian hàng', 'Linh hoạt', 'accepted', 'Bài test nhập liệu đạt 99% chính xác.'),
+  ('40000000-0000-4000-8000-000000000017', '30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', 'Em đăng ký ứng tuyển ca tối và cuối tuần tại Cafe Mộc Demo.', '6 tháng CTV truyền thông', 'Ca tối & Cuối tuần', 'pending', NULL),
+  ('40000000-0000-4000-8000-000000000018', '30000000-0000-4000-8000-000000000007', '20000000-0000-4000-8000-000000000001', 'Em sử dụng thành thạo Canva Pro và Illustrator cơ bản.', 'Thiết kế ấn phẩm CLB', 'Linh hoạt', 'pending', NULL),
+  ('40000000-0000-4000-8000-000000000019', '30000000-0000-4000-8000-000000000022', '20000000-0000-4000-8000-000000000001', 'Em đã có kinh nghiệm quản trị fanpage CLB sinh viên.', 'Quản trị fanpage 15.000 thành viên', 'Ca tối', 'reviewed', 'Hồ sơ phù hợp, bộ phận Nhân sự đang xếp lịch trao đổi.'),
+  ('40000000-0000-4000-8000-000000000020', '30000000-0000-4000-8000-000000000023', '20000000-0000-4000-8000-000000000001', 'Em gửi hồ sơ ứng tuyển vị trí thiết kế Slide thuyết trình.', 'Thiết kế slide bài giảng', 'Linh hoạt', 'rejected', 'Đợt tuyển này đã đủ số lượng cộng tác viên.')
 ON CONFLICT (job_id, student_id) DO UPDATE SET
   status = EXCLUDED.status,
   employer_note = EXCLUDED.employer_note;

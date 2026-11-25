@@ -1,14 +1,19 @@
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getStudentPortalData,
 } from "@/services/data-service";
 import { StudentApplicationsClient } from "@/components/dashboard/student-applications-client";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "My Application Pipeline – Quản lý ứng tuyển" };
 
 export default async function StudentApplicationsPage() {
   const auth = await getCurrentAuthContext();
-  const data = await getStudentPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/student/applications");
+  }
+  const data = await getStudentPortalData(auth.user.id);
 
   return (
     <div className="space-y-6">

@@ -1,10 +1,15 @@
+import { redirect } from "next/navigation";
 import { getCurrentAuthContext } from "@/services/data-service";
 import { EmployerProfileForm } from "@/components/forms/employer-profile-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Hồ sơ doanh nghiệp" };
 
 export default async function EmployerProfilePage() {
   const auth = await getCurrentAuthContext();
+  if (!auth.user) {
+    redirect("/login?next=/employer/profile");
+  }
 
   return (
     <div className="space-y-6">

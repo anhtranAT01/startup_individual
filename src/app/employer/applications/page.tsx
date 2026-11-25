@@ -1,9 +1,11 @@
+import { redirect } from "next/navigation";
 import {
   getCurrentAuthContext,
   getEmployerPortalData,
 } from "@/services/data-service";
 import { EmployerApplicationsClient } from "@/components/dashboard/employer-applications-client";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Quản lý hồ sơ ứng viên" };
 
 export default async function EmployerApplicationsPage({
@@ -13,7 +15,10 @@ export default async function EmployerApplicationsPage({
 }) {
   const sp = await searchParams;
   const auth = await getCurrentAuthContext();
-  const data = await getEmployerPortalData(auth.user!.id);
+  if (!auth.user) {
+    redirect("/login?next=/employer/applications");
+  }
+  const data = await getEmployerPortalData(auth.user.id);
 
   return (
     <div className="space-y-6">

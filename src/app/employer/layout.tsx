@@ -5,6 +5,8 @@ import {
 } from "@/services/data-service";
 import { EmployerWorkspaceShell } from "@/components/layout/employer-workspace-nav";
 
+export const dynamic = "force-dynamic";
+
 export default async function EmployerPortalLayout({
   children,
 }: {

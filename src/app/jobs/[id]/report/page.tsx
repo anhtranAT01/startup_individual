@@ -7,6 +7,7 @@ import {
 } from "@/services/data-service";
 import { ReportJobForm } from "@/components/forms/report-job-form";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Báo cáo tin tuyển dụng đáng ngờ" };
 
 export default async function ReportJobPage({
