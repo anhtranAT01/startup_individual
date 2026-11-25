@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 99%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Chủ đạo: Xanh dương đậm chuẩn công nghệ (Deep Royal Navy) */
+    --primary: 221 83% 43%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Màu phụ: Xanh Cyan / Mint nhạt */
+    --secondary: 199 89% 96%;
+    --secondary-foreground: 221 83% 32%;
+
+    --muted: 210 40% 96.5%;
+    --muted-foreground: 215 16% 45%;
+
+    --accent: 187 92% 95%;
+    --accent-foreground: 192 91% 28%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 89%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-slate-50/70 text-foreground antialiased selection:bg-blue-600/15 selection:text-blue-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer utilities {
+  .bg-hero-mesh {
+    background-color: #0b1938;
+    background-image:
+      radial-gradient(at 15% 15%, rgba(37, 99, 235, 0.35) 0px, transparent 50%),
+      radial-gradient(at 85% 20%, rgba(6, 182, 212, 0.28) 0px, transparent 48%),
+      radial-gradient(at 55% 85%, rgba(16, 185, 129, 0.16) 0px, transparent 52%);
+  }
+
+  .glass-panel {
+    @apply bg-white/85 backdrop-blur-md border border-white/60 shadow-soft;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated hover:border-blue-200/90;
+  }
+}
