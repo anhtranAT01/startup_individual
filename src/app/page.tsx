@@ -69,6 +69,8 @@ const STUDENT_TESTIMONIALS = [
   },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const auth = await getCurrentAuthContext();
   const [{ stats, recommendedJobs }, { jobs: allActiveJobs }] =
