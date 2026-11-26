@@ -21,16 +21,16 @@ export interface ButtonProps
 
 const variantClasses: Record<StuworkButtonVariant, string> = {
   primary:
-    "bg-blue-700 text-white shadow-sm hover:bg-blue-800 active:bg-blue-900",
+    "bg-[#00b14f] text-white shadow-sm hover:bg-[#009b45] active:bg-emerald-800",
   default:
-    "bg-blue-700 text-white shadow-sm hover:bg-blue-800 active:bg-blue-900",
+    "bg-[#00b14f] text-white shadow-sm hover:bg-[#009b45] active:bg-emerald-800",
   accent:
-    "bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-sm hover:from-cyan-600 hover:to-teal-600",
+    "bg-gradient-to-r from-[#00b14f] via-emerald-500 to-teal-500 text-white shadow-sm hover:from-[#009b45] hover:to-emerald-600",
   outline:
-    "border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-300",
+    "border border-slate-200 bg-white text-slate-800 hover:bg-emerald-50/50 hover:border-emerald-300 hover:text-emerald-800",
   secondary:
-    "bg-blue-50 text-blue-800 hover:bg-blue-100/80 border border-blue-100",
-  ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+    "bg-emerald-50 text-emerald-800 hover:bg-emerald-100/80 border border-emerald-200/80",
+  ghost: "text-slate-700 hover:bg-emerald-50 hover:text-emerald-800",
   danger: "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
   destructive: "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
 };
@@ -50,7 +50,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={cn(
-          "inline-flex items-center justify-center font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:pointer-events-none disabled:opacity-55",
+          "inline-flex items-center justify-center font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 disabled:pointer-events-none disabled:opacity-55",
           variantClasses[variant],
           sizeClasses[size],
           className

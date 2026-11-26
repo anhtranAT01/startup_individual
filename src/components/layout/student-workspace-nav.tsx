@@ -90,7 +90,7 @@ export function StudentWorkspaceShell({
     .toUpperCase();
 
   return (
-    <div className="min-h-[calc(100vh-68px)] bg-gradient-to-br from-indigo-100/55 via-slate-50 to-blue-50/50 py-6 px-3 sm:px-6">
+    <div className="min-h-[calc(100vh-68px)] bg-gradient-to-br from-emerald-100/55 via-slate-50 to-teal-50/50 py-6 px-3 sm:px-6">
       <div className="mx-auto max-w-[1360px] rounded-[28px] border border-slate-200/90 bg-white/95 shadow-elevated overflow-hidden flex flex-col md:flex-row min-h-[740px]">
         {/* Left Slim Icon Rail (Matching Image 1 left sidebar with green notification pills) */}
         <aside className="hidden md:flex w-[76px] shrink-0 flex-col items-center justify-between border-r border-slate-100 bg-white py-6">
@@ -100,7 +100,7 @@ export function StudentWorkspaceShell({
               <Link
                 href="/"
                 title="Về trang chủ STUWORK"
-                className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#00b14f] text-white shadow-sm hover:bg-[#009b45] transition-colors"
               >
                 <ShieldCheck className="h-6 w-6" />
               </Link>
@@ -122,7 +122,7 @@ export function StudentWorkspaceShell({
                     className={cn(
                       "relative flex h-11 w-11 items-center justify-center rounded-2xl transition-all",
                       active
-                        ? "bg-blue-50 text-blue-700 shadow-2xs"
+                        ? "bg-emerald-50 text-[#00873c] shadow-2xs"
                         : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
                     )}
                   >

@@ -146,13 +146,13 @@ export function JobsFilterPanel({
         <Card className="p-5 space-y-5">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-              <SlidersHorizontal className="h-4 w-4 text-blue-700" />
+              <SlidersHorizontal className="h-4 w-4 text-[#00b14f]" />
               Bộ lọc chi tiết
             </h2>
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#009b45] hover:underline"
             >
               <RotateCcw className="h-3 w-3" />
               Đặt lại

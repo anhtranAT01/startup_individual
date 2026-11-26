@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { JobCard } from "./job-card";
 
 const LOCATION_PILLS = [
-  { id: "all", label: "Ngẫu Nhiên / Tất cả" },
+  { id: "all", label: "Ngẫu Nhiên" },
   { id: "Hà Nội", label: "Hà Nội" },
   { id: "TP. Hồ Chí Minh", label: "Thành phố Hồ Chí Minh" },
   { id: "Đà Nẵng", label: "Đà Nẵng" },
@@ -68,22 +68,22 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="space-y-5">
-      {/* Header Row matching Image 2 ("Việc làm tốt nhất | Đề xuất bởi STUWORK MATCH") */}
+      {/* Header Row matching TopCV Image 2 ("Việc làm tốt nhất | Đề xuất bởi STUWORK AI") */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-blue-800">
+        <div className="flex flex-wrap items-center gap-3.5">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#00b14f]">
             Việc làm tốt nhất
           </h2>
-          <div className="hidden sm:flex items-center gap-1.5 border-l-2 border-slate-200 pl-3">
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
+          <div className="hidden sm:flex items-center gap-2 border-l-2 border-slate-200 pl-3.5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#00b14f] to-teal-600 text-white shadow-2xs">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
             <div className="leading-none">
-              <span className="block text-[10px] font-semibold uppercase text-slate-400">
+              <span className="block text-[10px] font-bold uppercase text-slate-400">
                 Đề xuất bởi
               </span>
               <span className="text-xs font-extrabold tracking-tight text-slate-900">
-                STUWORK MATCH
+                STUWORK AI
               </span>
             </div>
           </div>
@@ -92,7 +92,7 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
         <div className="flex items-center gap-2">
           <Link
             href="/jobs"
-            className="text-sm font-semibold text-slate-700 hover:text-blue-700 underline underline-offset-4 mr-1"
+            className="text-sm font-bold text-slate-700 hover:text-[#00b14f] underline underline-offset-4 mr-1"
           >
             Xem tất cả
           </Link>
@@ -101,7 +101,7 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
             aria-label="Trang trước"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 disabled:opacity-40"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#00b14f] bg-white text-[#00b14f] hover:bg-emerald-50 disabled:opacity-35 disabled:border-slate-200 disabled:text-slate-400 transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -110,17 +110,17 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={page >= totalPages - 1}
             aria-label="Trang tiếp"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 disabled:opacity-40"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#00b14f] bg-white text-[#00b14f] hover:bg-emerald-50 disabled:opacity-35 disabled:border-slate-200 disabled:text-slate-400 transition-colors"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      {/* Filter Dropdown + Quick Location Pills Row (Matching Image 2) */}
+      {/* Filter Dropdown + Quick Location Pills Row (Matching TopCV Green Pills) */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-600 shadow-2xs w-fit">
-          <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
+          <SlidersHorizontal className="h-3.5 w-3.5 text-[#00b14f]" />
           <span>Lọc theo:</span>
           <select
             value={filterMode}
@@ -129,10 +129,10 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
               setActivePill("all");
               setPage(0);
             }}
-            className="font-bold text-slate-900 bg-transparent focus:outline-none"
+            className="font-extrabold text-slate-900 bg-transparent focus:outline-none cursor-pointer"
           >
-            <option value="location">Địa điểm & Ca làm</option>
-            <option value="category">Nhóm ngành nghề</option>
+            <option value="location">Địa điểm</option>
+            <option value="category">Ngành nghề</option>
           </select>
         </div>
 
@@ -150,8 +150,8 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
                 className={cn(
                   "rounded-full px-4 py-2 text-xs font-bold transition-all",
                   active
-                    ? "bg-blue-600 text-white shadow-xs"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200/80"
+                    ? "bg-[#00b14f] text-white shadow-sm"
+                    : "bg-white border border-slate-200/80 text-slate-700 hover:border-[#00b14f]/50 hover:text-[#009b45]"
                 )}
               >
                 {pill.label}
@@ -161,15 +161,15 @@ export function FeaturedJobsTabs({ jobs }: { jobs: Job[] }) {
         </div>
       </div>
 
-      {/* Dismissible Tip Banner (Matching Image 2) */}
+      {/* Dismissible Tip Banner */}
       {showTip ? (
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-200/80 bg-blue-50/50 px-4 py-2.5 text-xs text-slate-700">
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-emerald-200/90 bg-emerald-50/70 px-4 py-2.5 text-xs text-slate-700">
           <div className="flex items-center gap-2">
-            <Lightbulb className="h-4 w-4 text-blue-600 shrink-0" />
+            <Lightbulb className="h-4 w-4 text-[#00b14f] shrink-0" />
             <span>
-              <strong className="text-blue-800">Gợi ý:</strong> Di chuột vào
-              tiêu đề việc làm để xem nhanh khung giờ ca làm, nhấn biểu tượng
-              trái tim để lưu công việc vào tài khoản của bạn.
+              <strong className="text-[#00873c]">Gợi ý:</strong> Di chuột vào
+              tiêu đề việc làm để xem thêm thông tin chi tiết ca làm, bấm biểu
+              tượng trái tim để lưu nhanh việc làm yêu thích.
             </span>
           </div>
           <button
